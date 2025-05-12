@@ -14,3 +14,6 @@ __pycache__/
 # Ignore OS-specific files
 .DS_Store
 Thumbs.db
+
+# Ignore the Vector DB cache files
+chroma_db/
