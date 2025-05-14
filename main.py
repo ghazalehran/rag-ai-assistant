@@ -1,30 +1,26 @@
-import os
-from dotenv import load_dotenv
-from langchain.document_loaders import PyPDFLoader
-from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.embeddings import OpenAIEmbeddings
-from langchain.vectorstores import Chroma
+from loader import load_vectorstore
+from utils import get_best_answer
 
-# Load environment variables
-load_dotenv()
+questions = [
+    "What is the main goal of the research?",
+    "What is the main hypothesis or research question?",
+    "Summarize the findings of this study.",
+    "What are the main conclusions drawn in the paper?",
+    "What data or participants were used in the study?",
+    "What methods or models were applied?",
+    "What is Self-Supervised Learning in the context of this research?",
+    "Did the SSL model outperform the baseline?",
+    "How is this research relevant to autism?",
+    "What limitations does the paper acknowledge?"
+]
 
-# Step 1: Load the document
-loader = PyPDFLoader("documents/your-article.pdf")
-docs = loader.load()
+# Change this to test other PDFs
+pdf_filename = "TWDpdf.pdf"
 
-# Step 2: Split into chunks
-text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=100)
-split_docs = text_splitter.split_documents(docs)
+vectorstore, split_docs = load_vectorstore(pdf_filename)
 
-# Step 3: Initialize embeddings
-embeddings = OpenAIEmbeddings(openai_api_key=os.getenv("OPENAI_API_KEY"))
-
-# Step 4: Store in Chroma vector DB
-vectorstore = Chroma.from_documents(
-    documents=split_docs,
-    embedding=embeddings,
-    persist_directory="chroma_db"
-)
-vectorstore.persist()
-
-print("✅ Embeddings stored in ChromaDB.")
+for i, question in enumerate(questions, 1):
+    print(f"\n{'='*80}")
+    print(f"🔹 Question {i}: {question}")
+    answer = get_best_answer(question, vectorstore, split_docs)
+    print(f"\n🧠 Answer:\n{answer}")
