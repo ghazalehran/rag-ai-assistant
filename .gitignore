@@ -21,3 +21,6 @@ chroma_dbs/
 
 #Ignore saved docs
 documents/Computational.pdf
+
+#Ignore avatar pics
+static/avatar.png

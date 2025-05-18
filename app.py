@@ -29,73 +29,103 @@ def ask_rag_assistant(pdf, question, dev_mode=False):
     except Exception as e:
         return f"⚠️ Error: {str(e)}"
 
-# Gradio UI
-demo = gr.Blocks(css="""
-    #title {
-        text-align: center;
-        font-size: 22px;
-        color: #2c3e50;
-        margin-bottom: 10px;
-    }
 
-    .gr-button {
-        font-weight: bold;
-        background-color: #4CAF50;
-        color: white;
-    }
+#gradio UI
+demo = gr.Blocks(css="""  # ← One single CSS declaration
+#layout {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 30px;
+    gap: 12px;
+    font-family: 'Segoe UI', sans-serif;
+}
 
-    #title-row {
-        justify-content: center;
-        align-items: center;
-        display: flex;
-        gap: 10px;
-        margin-bottom: 10px;
-    }
+#avatar {
+    width: 70px;
+    border-radius: 12px;
+}
 
-    #answer-row {
-        display: flex;
-        align-items: flex-start;
-        gap: 12px;
-        margin-top: 20px;
-    }
+#right-col {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1;
+}
 
-    #answer-bubble {
-        background-color: #f0f0f0;
-        padding: 12px;
-        border-radius: 12px;
-        border: 1px solid #ccc;
-        max-width: 80%;
-        font-size: 15px;
-        line-height: 1.5;
-        box-shadow: 2px 2px 6px rgba(0,0,0,0.05);
-    }
-""")
+#speech {
+    background-color: #f0f0f0;
+    padding: 16px 18px;
+    border-radius: 12px;
+    border: 1px solid #ccc;
+    position: relative;
+    font-size: 15px;
+    line-height: 1.5;
+    box-shadow: 2px 2px 6px rgba(0,0,0,0.05);
+    min-height: 60px;
+}
 
-with demo:
-    with gr.Column():
-        with gr.Row(elem_id="title-row"):
-            # gr.Image("static/popavatar.jpg", width=70, show_label=False, show_download_button=False)
-            gr.Markdown("### <div id='title'>Ghazal's AI Research Assistant</div>")
+#speech::before {
+    content: "";
+    position: absolute;
+    top: 18px;
+    left: -10px;
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-right: 10px solid #f0f0f0;
+    border-bottom: 10px solid transparent;
+}
 
-        gr.Markdown("---")
+#question-box textarea {
+    height: 40px !important;
+    font-size: 15px;
+    padding: 8px 10px;
+}
 
-        pdf_input = gr.File(label="📄 Upload your PDF", file_types=[".pdf"])
-        question_input = gr.Textbox(label="🔎 Ask a question", placeholder="e.g. What is the conclusion?", lines=2)
-        dev_toggle = gr.Checkbox(label="🧪 Dev Mode (skip API)", value=False)
-        submit_btn = gr.Button("Get Answer")
+#input-row {
+    display: flex;
+    gap: 10px;
+}
 
-        # 🧠 Answer shown as avatar + speech bubble
-        with gr.Row(elem_id="answer-row"):
-            gr.Image("static/popavatar.jpg", width=70, show_label=False, show_download_button=False)
-            answer_output = gr.Markdown(elem_id="answer-bubble")
+#upload-btn .gr-file {
+    height: 36px !important;
+    width: 120px !important;
+    font-size: 13px;
+    padding: 2px 6px !important;
+    background-color: #eaeaea;
+}
 
-        status_label = gr.Label()
+.gr-button {
+    background-color: #4CAF50;
+    color: white;
+    font-weight: bold;
+    height: 40px;
+    padding: 0 16px;
+}
+""")  # ✅ End of CSS
+
+with demo:  # 👈 No need to re-declare gr.Blocks
+    with gr.Row(elem_id="layout"):
+        gr.Image("static/avatar.png", elem_id="avatar", show_label=False)
+
+        with gr.Column(elem_id="right-col"):
+            answer_output = gr.Markdown("💬 Ask me something about your research paper!", elem_id="speech")
+            question_input = gr.Textbox(label="", placeholder="Ask a question...", lines=1, elem_id="question-box")
+
+            with gr.Row(elem_id="input-row"):
+                pdf_input = gr.File(label="Upload PDF", file_types=[".pdf"], elem_id="upload-btn")
+                submit_btn = gr.Button("Get Answer")
+                dev_toggle = gr.Checkbox(label="🧪 Dev Mode", value=False)
+
+        def run_assistant(pdf, question, dev_mode):
+            result = ask_rag_assistant(pdf, question, dev_mode)
+            return result if isinstance(result, str) else result[0]
 
         submit_btn.click(
-            ask_rag_assistant,
+            fn=run_assistant,
             inputs=[pdf_input, question_input, dev_toggle],
-            outputs=[answer_output, status_label]
+            outputs=answer_output
         )
-
 
 demo.launch()
