@@ -282,6 +282,3 @@ with demo:
             inputs=[],
             outputs=[answer_output, chat_history, pdf_input, question_input, file_status]
         )
-
-
-demo.launch()
