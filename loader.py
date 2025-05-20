@@ -3,14 +3,10 @@ from langchain.vectorstores import Chroma
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.document_loaders import PyPDFLoader
 from langchain.embeddings import OpenAIEmbeddings
-# from dotenv import load_dotenv
+from dotenv import load_dotenv
 from config import CHUNK_SIZE, CHUNK_OVERLAP
-import openai
-import streamlit as st
 
-openai.api_key = st.secrets["OPENAI_API_KEY"]
-
-# load_dotenv()
+load_dotenv()
 
 def load_vectorstore(pdf_name):
     # Build paths
