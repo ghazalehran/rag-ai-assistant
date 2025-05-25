@@ -1,4 +1,4 @@
-# 🧠 GazaRA: Your AI Research Assistant
+# 🧠 ChibiRan: Your Mini AI Assistant
 
 ## RAG-based QA for Scientific PDFs
 
