@@ -51,7 +51,7 @@ Upload a research PDF, ask natural questions, and get intelligent answers — po
 ```
 rag-ai-assistant/
 ├── app_local.py           # Gradio app (local)
-├── app_hg.py           # Gradio app (Hugging Face Deployment)
+├── app_hg.py              # Gradio app (Hugging Face Deployment)
 ├── main.py                # Optional CLI runner
 ├── config.py              # Central config (model, chunk size, secrets)
 ├── loader.py              # Vectorstore loading (FAISS or Chroma)
