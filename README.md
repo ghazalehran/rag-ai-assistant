@@ -12,7 +12,7 @@ Upload a research PDF, ask natural questions, and get intelligent answers — po
 
 ## 🚀 Live App
 
-[![Hugging Face](https://img.shields.io/badge/🤗%20Try%20on-Hugging%20Face-blue?logo=huggingface)](https://huggingface.co/spaces/GazalRan/GazaRA)
+[![Hugging Face](https://img.shields.io/badge/🤗%20Try%20on-Hugging%20Face-blue?logo=huggingface)](https://huggingface.co/spaces/GazalRan/ChibiRan)
 
 ---
 
