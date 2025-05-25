@@ -1,63 +1,73 @@
+# 🧠 GazaRA: Your AI Research Assistant
 
-# 🧠 AI Research Assistant — RAG-based QA for Scientific PDFs
+## RAG-based QA for Scientific PDFs
 
-This is a modular **Retrieval-Augmented Generation (RAG)** app built with **LangChain**, **FAISS/Chroma**, and **OpenAI/Hugging Face** models. It enables you to upload research PDFs and ask intelligent, context-aware questions — powered by embeddings, vector search, and LLMs.
+> **Version 1.0** 
 
-> ⚙️ Designed to be scalable, extensible, and cloud-deployable (Hugging Face, Streamlit). Ideal for demonstrating production-grade NLP capabilities.
+This is a modular **Retrieval-Augmented Generation (RAG)** assistant built with **LangChain**, **FAISS/Chroma**, and **OpenAI/Hugging Face** LLMs.
 
----
-
-## 📸 Live Demo Interface
-
-<img src="static\gradio-interface.png" alt="Gradio UI Screenshot" width="100%">
+Upload a research PDF, ask natural questions, and get intelligent answers — powered by vector embeddings, semantic search, and LLMs.
 
 ---
 
-## 🚀 Key Features
+## 🚀 Live App
 
-- ✅ Upload any PDF research paper
-- ✂️ Smart chunking & vector embedding
-- 🔎 Search via **FAISS** (default) or **ChromaDB**
-- 🧠 Flexible LLM backends: `OpenAI`, `Hugging Face`, or your own
-- 🔍 Dual QA strategy: strict context-only + fallback summarization
-- 💾 Cached vectorstores — no reprocessing
-- 🧪 Dev mode for testing without LLM cost
-- 🌐 Gradio interface included for rapid UI
+[![Hugging Face](https://img.shields.io/badge/🤗%20Try%20on-Hugging%20Face-blue?logo=huggingface)](https://huggingface.co/spaces/GazalRan/GazaRA)
 
 ---
 
-## 🛠️ Skills & Stack Highlights
+## 📸 Screenshot
+
+<img src="static/gradio-interface.png" alt="Gradio Interface" width="100%">
+
+---
+
+## 🔧 Key Features
+
+- 📄 Upload and parse any scientific PDF
+- 🧠 Question-answering powered by `gpt-4`, Mistral, or your own model
+- ✂️ Automatic chunking and embedding with LangChain
+- 🔍 Search via **FAISS** (default) or **ChromaDB**
+- 🎯 Two-layer QA: strict context-only answers + fallback summarization
+- 💾 Caches vectorstores — avoids re-embedding
+- 🔐 GPT password-lock for usage control (e.g., token cost management)
+- 🧪 Dev mode for cost-free testing
+- 🌐 Gradio interface for local or cloud deployment
+
+---
+
+## 💼 Tech Stack / Skills
 
 - **Python**, **LangChain**, **LLMs**, **RAG**
 - OpenAI API, Hugging Face Hub models
 - FAISS, ChromaDB, PyPDFLoader
-- Gradio UI, .env + Hugging Face secrets
-- Local + cloud deployability
+- Gradio UI, `.env` & Hugging Face secrets
+- Ready for local or cloud (Hugging Face Spaces, Streamlit)
 
 ---
 
-## 📁 Folder Structure
+## 📁 Project Structure
 
 ```
 rag-ai-assistant/
-├── app_local.py           # Gradio UI for local testing
-├── main.py                # Optional CLI/deployment entry point
-├── loader.py              # Vectorstore creator/loader
-├── utils.py               # QA chain logic with fallback
-├── llm_provider.py        # LLM loader (OpenAI / HF)
-├── config.py              # Centralized config for env + models
-├── documents/             # Drop your PDFs here
-├── faiss_dbs/             # Vectorstore (FAISS)
-├── chroma_dbs/            # Vectorstore (Chroma)
-├── requirements.txt
-└── .env                   # Only used locally
+├── app_local.py           # Gradio app (local)
+├── app_hg.py           # Gradio app (Hugging Face Deployment)
+├── main.py                # Optional CLI runner
+├── config.py              # Central config (model, chunk size, secrets)
+├── loader.py              # Vectorstore loading (FAISS or Chroma)
+├── llm_provider.py        # Dynamically load OpenAI or Hugging Face LLMs
+├── utils.py               # Prompting logic + fallback handling
+├── documents/             # Upload PDFs here
+├── faiss_dbs/             # FAISS vectorstore cache
+├── chroma_dbs/            # Chroma vectorstore cache
+└── static/                # Avatar, screenshots
 ```
 
 ---
 
-## ⚙️ Quick Setup
+## 🛠️ Setup Instructions
 
-### 1. Clone & Set Up
+### 1. Clone and Create Environment
 
 ```bash
 git clone https://github.com/ghazalehran/rag-ai-assistant.git
@@ -67,62 +77,72 @@ source rag-env/bin/activate  # Windows: rag-env\Scripts\activate
 pip install -r requirements.txt
 ```
 
-### 2. Environment Variables
+### 2. Add Secrets Locally
 
-Create a `.env` file (used locally only):
+Create a `.env` file:
 
-```env
+```
 OPENAI_API_KEY=sk-...
 HUGGINGFACEHUB_API_TOKEN=hf-...
+GPT_ACCESS_PASSWORD=your-password
 ```
 
-> For Hugging Face or Streamlit cloud deploy, use **secret management UI**.
+> For Hugging Face Spaces or Streamlit: use **secret management UI** instead.
 
 ---
 
-## 🖥️ Run the Gradio App
+## 🖥 Run the App Locally
 
 ```bash
 python app_local.py
 ```
 
-This opens a local Gradio interface in your browser where you can:
-
-- Upload a PDF
-- Ask a natural language question
-- Get an intelligent answer from the LLM
+Then visit `http://localhost:7860` in your browser.
 
 ---
 
-## 🔄 Configurable Options
+## ⚙️ Configuration Options
 
-All configurations are managed via `config.py`:
+All in `config.py`:
 
-| Option               | Description                                |
-|----------------------|--------------------------------------------|
-| `LLM_BACKEND`        | `"openai"` / `"huggingface"`               |
-| `VECTORSTORE_BACKEND`| `"faiss"` / `"chroma"`                     |
-| `CHUNK_SIZE`         | Default: `800` tokens                      |
-| `TEMPERATURE`        | LLM creativity (default: `0.2`)            |
-| `USE_HF_SECRETS`     | `True` if deploying on Hugging Face Cloud  |
+| Key                  | Description                          |
+|----------------------|--------------------------------------|
+| `LLM_BACKEND`        | `"openai"` / `"huggingface"`         |
+| `VECTORSTORE_BACKEND`| `"faiss"` / `"chroma"`               |
+| `TEMPERATURE`        | Controls LLM creativity              |
+| `USE_HF_SECRETS`     | Use `.env` (False) or cloud secrets  |
+| `OPENAI_MODEL`       | Default: `"gpt-4"`                   |
+| `HF_MODEL`           | Mistral, Falcon, etc.                |
 
 ---
 
-## ✅ Example Models Used
+## ✅ Models Used
 
 - **OpenAI**: `gpt-4`, `gpt-3.5-turbo`
 - **Hugging Face**: [`mistralai/Mistral-7B-Instruct-v0.2`](https://huggingface.co/mistralai/Mistral-7B-Instruct-v0.2)
 
 ---
 
+## 📦 What's Next (v2 Goals)
+
+- 🔍 Add citation tracing / confidence scoring
+- 🧠 Add local LLM support (e.g., llama.cpp)
+- 📚 Multi-document retrieval
+- 📈 Improve prompt tuning & factuality checks
+
+---
+
 ## 📄 License
 
-MIT — free for personal, academic, or professional use.
+MIT License — free to use and build upon.
 
 ---
 
-## 🙋‍♂️ Questions?
+## 🙋‍♀️ Let’s Connect!
 
-Feel free to open an issue or connect on [LinkedIn](https://linkedin.com).
+- 💼 [LinkedIn](https://linkedin.com)
+- 💻 Open an issue or contribute!
 
 ---
+
+_This app was built as part of my AI/NLP portfolio to showcase modern RAG pipelines and research-focused use cases._
