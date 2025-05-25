@@ -18,9 +18,10 @@ Thumbs.db
 # Ignore all vector DB directories
 chroma_db/
 chroma_dbs/
+fais_dbs
 
 #Ignore saved docs
-documents/Computational.pdf
+documents/
 
 #Ignore avatar pics
 static/avatar.png
