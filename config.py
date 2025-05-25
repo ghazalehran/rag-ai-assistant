@@ -12,7 +12,7 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 HUGGINGFACEHUB_API_TOKEN = os.getenv("HUGGINGFACEHUB_API_TOKEN")
 
 # === Embedding / Vectorstore / Model Settings ===
-VECTORSTORE_BACKEND = os.getenv("VECTORSTORE_BACKEND", "chroma")  # "faiss" or "chroma"
+VECTORSTORE_BACKEND = os.getenv("VECTORSTORE_BACKEND", "faiss")  # "faiss" or "chroma"
 EMBEDDING_PROVIDER = os.getenv("EMBEDDING_PROVIDER", "openai")   # "openai" or "huggingface"
 LLM_BACKEND = os.getenv("LLM_BACKEND", "openai")                  # "openai", "huggingface", etc.
 
