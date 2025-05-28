@@ -1,4 +1,4 @@
-# 🧠 ChibiRan: Your Mini AI Assistant
+# 🧠 Gazlia, Your Intelligent Research Companion
 
 ## RAG-based QA for Scientific PDFs
 
